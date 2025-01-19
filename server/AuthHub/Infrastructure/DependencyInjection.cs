@@ -9,24 +9,21 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AuthHubDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(AuthHubDbContext).Assembly.FullName)));
+        var connectionString = configuration.GetConnectionString("DefaultConnection");  
 
+        services.AddDbContext<AuthHubDbContext>(options => options.UseSqlServer(connectionString));
+
+        services.AddAspIdentity(configuration);
         return services;
     }
 
     public static IServiceCollection AddAspIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentityCore<User>(options =>
-        {
-          
-        })
-            .AddEntityFrameworkStores<AuthHubDbContext>()
-            .AddRoleManager<Role>()
-            .AddRoles<Role>();
-
+        services.AddIdentityCore<User>()
+                .AddRoles<Role>()
+                .AddEntityFrameworkStores<AuthHubDbContext>()
+                .AddUserManager<UserManager<User>>()
+                .AddRoleManager<RoleManager<Role>>();
 
         return services;
     }
