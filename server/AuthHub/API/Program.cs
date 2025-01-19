@@ -1,3 +1,4 @@
+using API.Middleware;
 using Application;
 using Infrastructure;
 
@@ -18,7 +19,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
