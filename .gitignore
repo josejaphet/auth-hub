@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/server/AuthHub/.vs/AuthHub
+/server/AuthHub/Application/obj
+/server/AuthHub/Application/bin/Debug/net9.0
+/server/AuthHub/Domain/obj
+/server/AuthHub/Domain/bin/Debug/net9.0
+/server/AuthHub/Infrastructure/bin/Debug/net9.0
+/server/AuthHub/Infrastructure/obj
