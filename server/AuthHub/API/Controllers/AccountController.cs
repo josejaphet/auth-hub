@@ -18,9 +18,10 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
         var command = new RegisterCommand(request.UserName,
-                                        request.Email,
-                                        request.Password,
-                                        request.PhoneNumber);
+                                          request.Email,
+                                          request.Password,
+                                          request.PhoneNumber, 
+                                          request.Roles);
 
         var result = await _mediator.Send(command, cancellationToken);
 
@@ -28,10 +29,10 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
-        var command = new LoginCommand(loginRequest.UserName, 
-                                       loginRequest.Password);
+        var command = new LoginCommand(request.UserName, 
+                                       request.Password);
 
         var result = await _mediator.Send(command, cancellationToken);
 

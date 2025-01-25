@@ -15,7 +15,7 @@ internal class RegisterCommandHandler : ICommandHandler<RegisterCommand, Guid>
     public async Task<Result<Guid>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
         var user = User.Create(command.UserName,
-                                command.Email, 
+                                command.Email,
                                 command.PhoneNumber);
 
         if (user == null)
@@ -30,13 +30,22 @@ internal class RegisterCommandHandler : ICommandHandler<RegisterCommand, Guid>
             return Result.Failure<Guid>(new Error("Auth.Register", "Email already exists"));
         }
 
-        var result = await _userManager.CreateAsync(user, 
+        var result = await _userManager.CreateAsync(user,
                                                     command.Password);
 
         if (!result.Succeeded)
         {
             string errors = JsonSerializer.Serialize(result.Errors);
 
+            return Result.Failure<Guid>(new Error("Auth.Register", errors));
+        }
+
+        var role = await _userManager.AddToRolesAsync(user,
+                                                     command.Roles.Select(x => x.ToString()));
+
+        if (!role.Succeeded)
+        {
+            string errors = JsonSerializer.Serialize(role.Errors);
             return Result.Failure<Guid>(new Error("Auth.Register", errors));
         }
 
