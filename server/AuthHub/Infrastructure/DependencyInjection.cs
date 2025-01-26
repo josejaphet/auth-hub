@@ -1,6 +1,8 @@
 ﻿using Domain.Abstractions;
+using Domain.Abstractions.Repositories;
 using Domain.Entities;
 using Infrastructure.Configurations.Security;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<AuthHubDbContext>());
 
         AddAspIdentity(services, configuration);
+        AddPersistence(services);
         return services;
     }
 
@@ -56,5 +59,10 @@ public static class DependencyInjection
                 .AddUserManager<UserManager<User>>()
                 .AddRoleManager<RoleManager<Role>>();
 
+    }
+
+    private static void AddPersistence(IServiceCollection services)
+    {
+        services.AddScoped<IRoleRepository, RoleRepository>();
     }
 }
