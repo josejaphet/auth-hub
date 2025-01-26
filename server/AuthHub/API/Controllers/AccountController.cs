@@ -1,5 +1,6 @@
 ﻿using Application.Features.Auth.Login;
 using Application.Features.Auth.Register;
+using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +26,17 @@ public class AccountController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(new CommonResponse()
+        {
+            Data = result.Value,
+            Message = result.Message,
+            IsSuccess = result.IsSuccess,
+        }) : BadRequest(new CommonResponse
+        {
+            Data = null,
+            Message = result.Error.ToString(),
+            IsSuccess = result.IsFailure
+        });
     }
 
     [HttpPost("login")]
@@ -36,6 +47,16 @@ public class AccountController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(new CommonResponse()
+        {
+            Data = result.Value,
+            Message = result.Message,
+            IsSuccess = result.IsSuccess,
+        }) : BadRequest(new CommonResponse
+        {
+            Data = null,
+            Message = result.Error.ToString(),
+            IsSuccess = result.IsFailure
+        });
     }
 }

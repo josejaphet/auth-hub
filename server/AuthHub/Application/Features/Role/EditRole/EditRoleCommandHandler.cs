@@ -46,6 +46,6 @@ public sealed class EditRoleCommandHandler : ICommandHandler<EditRoleCommand, Ed
         {
             NewValue = command.Name,
             OldValue = oldValue!
-        });
+        }, "Role updated successfully.");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.Features.Role.AddRole;
 using Application.Features.Role.EditRole;
 using Application.Features.Role.GetRoles;
+using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,17 @@ public class RoleController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(new CommonResponse()
+        {
+            Data = result.Value,
+            Message = result.Message,
+            IsSuccess = result.IsSuccess,
+        }) : BadRequest(new CommonResponse
+        {
+            Data = null,
+            Message = result.Error.ToString(),
+            IsSuccess = result.IsFailure
+        });
     }
 
     [HttpPut("{Id:Guid}")]
@@ -32,7 +43,17 @@ public class RoleController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(new CommonResponse()
+        {
+            Data = result.Value,
+            Message = result.Message,
+            IsSuccess = result.IsSuccess,
+        }) : BadRequest(new CommonResponse
+        {
+            Data = null,
+            Message = result.Error.ToString(),
+            IsSuccess = result.IsFailure
+        });
     }
 
     [HttpGet]
@@ -42,6 +63,16 @@ public class RoleController : ControllerBase
 
         var result = await _mediator.Send(query, cancellationToken);
 
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(new CommonResponse()
+        {
+            Data = result.Value,
+            Message = result.Message,
+            IsSuccess = result.IsSuccess,
+        }) : BadRequest(new CommonResponse
+        {
+            Data = null,
+            Message = result.Error.ToString(),
+            IsSuccess = result.IsFailure
+        });
     }
 }

@@ -20,7 +20,7 @@ public sealed class GetRolesQueryHandler : IQueryHandler<GetRolesQuery, IEnumera
 
         var mappedResult = Map(result);
 
-        return Result.Success(mappedResult);
+        return Result.Success(mappedResult, $"Retrieved {mappedResult.Count()} data.");
     }
 
     private static IEnumerable<GetRolesResponse> Map(IEnumerable<Domain.Entities.Role> roles)

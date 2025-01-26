@@ -49,6 +49,6 @@ internal class RegisterCommandHandler : ICommandHandler<RegisterCommand, Guid>
             return Result.Failure<Guid>(new Error("Auth.Register", errors));
         }
 
-        return Result<Guid>.Success(user.Id);
+        return Result<Guid>.Success(user.Id, $"User {command.UserName} added successfully.");
     }
 }

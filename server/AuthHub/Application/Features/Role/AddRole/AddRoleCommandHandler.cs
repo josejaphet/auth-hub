@@ -38,6 +38,6 @@ public sealed class AddRoleCommandHandler : ICommandHandler<AddRoleCommand, AddR
         return Result.Success(new AddRoleResponse
         {
             RoleName = role.Name!
-        });
+        }, $"Role {command.Name} added successfully.");
     }
 }

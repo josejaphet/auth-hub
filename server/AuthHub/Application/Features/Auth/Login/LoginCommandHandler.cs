@@ -64,6 +64,6 @@ public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginRes
             FullName = string.Empty,
             Token = token,
             RefreshToken = refreshToken
-        });
+        },"Login successful.");
     }
 }
