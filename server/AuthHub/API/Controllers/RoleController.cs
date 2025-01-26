@@ -1,6 +1,6 @@
 ﻿using Application.Features.Role.AddRole;
+using Application.Features.Role.EditRole;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -18,6 +18,16 @@ public class RoleController : ControllerBase
     public async Task<IActionResult> AddRole([FromBody] AddRoleRequest request, CancellationToken cancellationToken)
     {
         var command = new AddRoleCommand(request.Name);
+
+        var result = await _mediator.Send(command, cancellationToken);
+
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+    }
+
+    [HttpPut("{Id:Guid}")]
+    public async Task<IActionResult> EditRole(Guid Id, [FromBody] EditRoleRequest request, CancellationToken cancellationToken)
+    {
+        var command = new EditRoleCommand(Id, request.Name);
 
         var result = await _mediator.Send(command, cancellationToken);
 

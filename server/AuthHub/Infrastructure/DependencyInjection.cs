@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Abstractions;
+using Domain.Entities;
 using Infrastructure.Configurations.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ public static class DependencyInjection
 
         services.AddDbContext<AuthHubDbContext>(options => options.UseSqlServer(connectionString));
 
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<AuthHubDbContext>());
 
         AddAspIdentity(services, configuration);
         return services;
