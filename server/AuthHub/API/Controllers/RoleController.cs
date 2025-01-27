@@ -1,5 +1,6 @@
 ﻿using Application.Features.Role.AddRole;
 using Application.Features.Role.EditRole;
+using Application.Features.Role.GetRoleById;
 using Application.Features.Role.GetRoles;
 using Domain;
 using MediatR;
@@ -60,6 +61,26 @@ public class RoleController : ControllerBase
     public async Task<IActionResult> GetRoles([FromBody] GetRolesRequest request, CancellationToken cancellationToken)
     {
         var query = new GetRolesQuery(request.Pagination);
+
+        var result = await _mediator.Send(query, cancellationToken);
+
+        return result.IsSuccess ? Ok(new CommonResponse()
+        {
+            Data = result.Value,
+            Message = result.Message,
+            IsSuccess = result.IsSuccess,
+        }) : BadRequest(new CommonResponse
+        {
+            Data = null,
+            Message = result.Error.ToString(),
+            IsSuccess = result.IsFailure
+        });
+    }
+
+    [HttpGet("{Id:Guid}")]
+    public async Task<IActionResult> GetRoleById(Guid Id, CancellationToken cancellationToken)
+    {
+        var query = new GetRoleByIdQuery(Id);
 
         var result = await _mediator.Send(query, cancellationToken);
 

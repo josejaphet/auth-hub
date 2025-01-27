@@ -10,11 +10,11 @@ public sealed class GetRolesQueryHandler : IQueryHandler<GetRolesQuery, IEnumera
     {
         _roleRepository = roleRepository;
     }
-    public async Task<Result<IEnumerable<GetRolesResponse>>> Handle(GetRolesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<GetRolesResponse>>> Handle(GetRolesQuery query, CancellationToken cancellationToken)
     {
         var result = await _roleRepository.GetRolesAsync(
-                                        request.Pagination.PageNumber,
-                                        request.Pagination.PageSize, 
+                                        query.Pagination.PageNumber,
+                                        query.Pagination.PageSize, 
                                         cancellationToken);
 
 
